@@ -48,44 +48,162 @@ var sum = function(array) {
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
+// var arraySum = function(array) {
+//   var flat = array.flat(2);
+  
+//   var sums = 0;
+//   // test for empty array, return 0 if so
+//   if (!array.length) {
+//     return 0;
+//   }
+//   // test for single element, return that if so
+//   if (array.length === 1) {
+//     return array[0];
+//   }
+//   // recurse
+//     // return array[0][0] + sum()
+//     // array[0] = 1 ... array[1] = 2, 3 ... array[2] = 
+//     return flat[0] + arraySum(flat.slice(1));
+// };
+
 var arraySum = function(array) {
-  var flat = array.flat(2);
-  var sums = 0;
+  // var flat = array.flat(2);
+  // var flat = [].concat.apply([], array);
+  // var sums = 0;
   // test for empty array, return 0 if so
-  if (!array.length) {
+  if (array.length === 0) {
     return 0;
   }
   // test for single element, return that if so
-  if (array.length === 1) {
+  if (array.length === 1 && Array.isArray(array) === false) {
     return array[0];
   }
   // recurse
     // return array[0][0] + sum()
     // array[0] = 1 ... array[1] = 2, 3 ... array[2] = 
-    return array[0][0] + sum();
+    if (Array.isArray(array[0]) === false) {
+      return array[0] + arraySum(array.slice(1));
+    }
+    return arraySum(array[0]) + arraySum(array.slice(1));
 };
 
 // 4. Check if a number is even.
+  // first determine if positive or negative (less than or greater than 0)
+    // if positive, while n > 0, n - 2
+      // if (n = 0), return true
+      // else false
+
+  // if (n === 0) return true
+  // if (n === 1 || n === -1) return false
+
+  // return (if n - 2 || n + 2)
 var isEven = function(n) {
+  // base cases:
+  if (n === 0) {
+    return true;
+  }
+  if (n === 1 || n === -1) {
+    return false;
+  }
+  while (n > 0) { // if n is positive
+    //recurse
+    // n - 2
+    return isEven(n - 2);
+  }
+  // rec case:
+  while (n < 0) { // if n is negative
+    //recurse 
+    // n + 2
+    return isEven(n + 2);
+  }
+
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
+
 var sumBelow = function(n) {
+  // base cases:
+  if (n === 0) {
+    return 0;
+  }
+  // recurse:
+  // if (n >= 1) {
+    while (n > 0) {
+    return (n - 1) + sumBelow(n - 1);
+    }
+  // }
+    while (n < 0) {
+    return (n + 1) + sumBelow(n + 1);
+    }
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
+/*
+base case:
+  // make sure there's a range
+recurse:
+  // determine which parameter is the smallest
+    increment that one until it reaches largest - 1
+*/
 var range = function(x, y) {
+  var arr = [];
+  // base cases:
+  // if (y - x === 0 || y - x === 1) {
+  //   return [];
+  // }
+  // recurse:
+  if (x <= y) {
+    if (y - x < 2) {
+      return arr;
+    } else {
+      arr.push(x + 1);
+    }
+    return arr.concat(range(x + 1, y));
+  }
+
+  if (x > y) {
+    if (x - y < 2) {
+      return arr;
+    } else {
+      arr.push(x - 1);
+    }
+    return arr.concat(range(x - 1, y));
+  }
 };
 
 // 7. Compute the exponent of a number.
 // The exponent of a number says how many times the base number is used as a factor.
 // 8^2 = 8 x 8 = 64. Here, 8 is the base and 2 is the exponent.
 // exponent(4,3); // 64
+// exponent(4,4); // 256
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  if (exp === 0) {
+    return 1;
+  }
+  if (exp === 1) {
+    return base;
+  }
+
+  if (exp > 1) {
+    // if (exp % 2 === 0) {
+      return base * exponent(base, exp - 1);
+    // }
+  //   else {
+  //     if (exp % 2 === 1) {
+  //       return (exponent(base, (exp - 1)) * base);
+  //     }
+  //   }
+  }
+  if (exp < 0) {
+  // else {
+    var neg = exponent(base, (-1 * exp));
+    return (1 / neg); // for 3, 4 = 1/81
+  }
+
 };
 
 // 8. Determine if a number is a power of two.
